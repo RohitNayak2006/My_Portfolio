@@ -19,3 +19,5 @@ Thumbs.db
 .vite/
 node_modules/
 dist/
+
+.vercel

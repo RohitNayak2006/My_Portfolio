@@ -107,9 +107,7 @@ const PORTFOLIO = {
 //  RENDERER — No need to edit below this line
 // ══════════════════════════════════════════════════════════════
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderAll();
-});
+
 
 function renderAll() {
   renderLoader();
@@ -358,11 +356,14 @@ function openProjectDetail(idx) {
 }
 
 function closeProjectDetail() {
-  const detail = document.getElementById("project-detail");
-  if (!detail) return;
-  detail.classList.remove("open");
-  document.body.style.overflow = "";
+  const detailPanel = document.getElementById("project-detail");
+  if (!detailPanel) return;
+
+  detailPanel.classList.remove("open");
+  // Restore body scroll
+  document.body.style.overflow = "auto";
 }
+window.closeProjectDetail = closeProjectDetail;
 
 // ── Keyboard navigation for carousel and detail panel ─────────
 function initCarouselKeys() {
@@ -644,3 +645,11 @@ function initHeroPanelParallax() {
   // no-op: replaced with CSS :hover { transform: translateY(-14px) }
 }
 
+// ══════════════════════════════════════════════════════════════
+//  INITIALIZATION
+// ══════════════════════════════════════════════════════════════
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", renderAll);
+} else {
+  renderAll();
+}
