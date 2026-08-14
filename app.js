@@ -22,7 +22,7 @@ const PORTFOLIO = {
   socials: [
     { label: "GitHub",   href: "https://github.com/RohitNayak2006",              icon: "github"   },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/rohit-kumar-nayak",  icon: "linkedin" },
-    { label: "Twitter",  href: "#",                                              icon: "twitter"  },
+    { label: "Twitter",  href: "https://x.com/_Rohit_Nayak",                     icon: "twitter"  },
   ],
 
   // ── Projects ─────────────────────────────────────────────────
