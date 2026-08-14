@@ -145,8 +145,7 @@ body {
 }
 
 .page-content {
-  flex-grow: 1;
-  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -335,10 +334,10 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: 45%;
+  width: 65%;
   height: 100%;
   object-fit: cover;
-  object-position: center 70%; /* anchors person lower in frame to show lower body */
+  object-position: center 40%; /* anchors person perfectly in frame */
   filter: brightness(0.9); /* Unblurred, clear */
   transform: scale(1.0);
   z-index: 0;
@@ -487,7 +486,6 @@ header {
 .hero-slot {
   position: relative;
   flex-grow: 1;
-  margin-bottom: auto; /* Pushes the bio text up */
   z-index: 2;
   display: flex;
   flex-direction: row;
@@ -502,8 +500,6 @@ header {
   max-width: 460px;
   display: flex;
   flex-direction: column;
-  align-self: flex-start;
-  margin-top: 2vh; /* Moves it down just enough to align below the ear */
 }
 
 
@@ -522,7 +518,7 @@ header {
   font-weight: 800;
   font-style: italic;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, #ffd700 0%, #ffffff 70%);
+  background: linear-gradient(135deg, #a8ffec 0%, #ffffff 70%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -531,7 +527,7 @@ header {
 .hero-tagline {
   font-size: 1rem;
   font-weight: 500;
-  color: #fcecae;
+  color: rgba(180, 255, 230, 0.95);
   margin-bottom: 24px;
   letter-spacing: 0.02em;
 }
@@ -551,10 +547,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  bottom: var(--pad);
-  left: var(--pad);
-  right: var(--pad);
 }
 
 .hero-footer-left {
@@ -571,7 +563,7 @@ header {
 .hero-social-link {
   font-size: 1rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-body-text-dark);
   position: relative;
   transition: color var(--trans);
 }
@@ -583,12 +575,12 @@ header {
   top: 105%;
   width: 0%;
   height: 1px;
-  background: #fcecae;
+  background: var(--color-primary);
   transition: width var(--trans);
 }
 
 .hero-social-link:hover {
-  color: #fcecae;
+  color: var(--color-primary);
 }
 
 .hero-social-link:hover::after {
@@ -597,13 +589,13 @@ header {
 
 .hero-email-link {
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #888;
   transition: color var(--trans);
   font-weight: 400;
 }
 
 .hero-email-link:hover {
-  color: #fcecae;
+  color: var(--color-primary);
 }
 
 /* ═══════════════════════════════════════════════
