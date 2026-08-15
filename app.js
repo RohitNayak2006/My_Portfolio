@@ -34,8 +34,8 @@ const PORTFOLIO = {
       subtitle: "Social Media App",
       description: "A new generation social media app built with latest technologies like one to one chart and reels, photosharing.",
       tags: ["React", "Node.js", "mongodb","Socket.io"],
-      image: "logo.jpg",
-      link: "https://viora-social-app.vercel.app/",
+      image: "logo.png",
+      link: "https://vioraofficial.vercel.app/",
       year: "2026",
     },
     {
@@ -621,6 +621,7 @@ function renderHeroPanels() {
   el.innerHTML = PORTFOLIO.projects.map((p, i) => `
     <div class="hero-panel" data-idx="${i}" title="${p.title}">
       <div class="hero-panel-body">
+        <img src="${p.image}" alt="${p.title}" class="hero-panel-image" />
         <span class="hero-panel-subtitle">${p.subtitle}</span>
         <h3 class="hero-panel-title">${p.title}</h3>
         <div class="hero-panel-tags">
