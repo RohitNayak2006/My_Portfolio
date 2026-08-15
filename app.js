@@ -30,13 +30,13 @@ const PORTFOLIO = {
   projects: [
     {
       id: "01",
-      title: "3D Web Experience",
-      subtitle: "Creative Coding",
-      description: "An immersive, procedurally generated 3D web experience built with WebGL and Three.js, featuring real-time shader animations.",
-      tags: ["Three.js", "WebGL", "GLSL", "SvelteKit"],
-      image: "thumb1.png",
-      link: "#",
-      year: "2024",
+      title: "Viora",
+      subtitle: "Social Media App",
+      description: "A new generation social media app built with latest technologies like one to one chart and reels, photosharing.",
+      tags: ["React", "Node.js", "mongodb","Socket.io"],
+      image: "logo.jpg",
+      link: "https://viora-social-app.vercel.app/",
+      year: "2026",
     },
     {
       id: "02",
