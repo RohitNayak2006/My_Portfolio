@@ -32,10 +32,10 @@ const PORTFOLIO = {
       id: "01",
       title: "Viora",
       subtitle: "Social Media App",
-      description: "A new generation social media app built with latest technologies like one to one chart and reels, photosharing.",
-      tags: ["React", "Node.js", "mongodb","Socket.io"],
+      description: "A new generation social media app built with latest technologies like one-to-one chat, reels, and photo sharing.",
+      tags: ["React", "Node.js", "MongoDB", "Socket.io"],
       image: "logo.png",
-      link: "https://vioraofficial.vercel.app/",
+      link: "#",
       year: "2026",
     },
     {
