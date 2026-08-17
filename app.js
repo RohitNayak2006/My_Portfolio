@@ -220,31 +220,8 @@ function renderCarousel() {
         ${PORTFOLIO.projects.map((p, i) => `
           <div class="carousel-card" data-idx="${i}">
             <img src="${p.image}" alt="${p.title}" class="carousel-card-image" loading="lazy" />
-            <div class="carousel-card-body">
-              <div class="carousel-card-meta">
-                <span class="carousel-card-subtitle">${p.subtitle}</span>
-                <span class="carousel-card-year">${p.year}</span>
-              </div>
-              <h3 class="carousel-card-title">${p.title}</h3>
-              <p class="carousel-card-desc">${p.description}</p>
-              <ul class="carousel-card-tags">
-                ${p.tags.map(t => `<li class="pill">${t}</li>`).join("")}
-              </ul>
-            </div>
           </div>
         `).join("")}
-      </div>
-
-      <div class="carousel-nav">
-        <button class="carousel-btn" id="carousel-prev" aria-label="Previous project">←</button>
-        <div class="carousel-dots" id="carousel-dots">
-          ${PORTFOLIO.projects.map((_, i) => `
-            <button class="carousel-dot ${i === 0 ? "active" : ""}"
-                    data-idx="${i}"
-                    aria-label="Project ${i + 1}"></button>
-          `).join("")}
-        </div>
-        <button class="carousel-btn" id="carousel-next" aria-label="Next project">→</button>
       </div>
     </div>
   `;
@@ -290,6 +267,21 @@ function renderCarousel() {
     if (Math.abs(diff) > 50) navigateCarousel(diff > 0 ? 1 : -1);
   });
 
+  // Mouse drag support
+  let isDragging = false;
+  let mouseStartX = 0;
+  track?.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    mouseStartX = e.clientX;
+  });
+  track?.addEventListener("mouseup", (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const diff = mouseStartX - e.clientX;
+    if (Math.abs(diff) > 50) navigateCarousel(diff > 0 ? 1 : -1);
+  });
+  track?.addEventListener("mouseleave", () => isDragging = false);
+
   updateCarousel();
 }
 
@@ -307,12 +299,27 @@ function updateCarousel() {
     else                  card.classList.add("pos-far-next");
   });
 
-  dots.forEach((dot, i) => dot.classList.toggle("active", i === carouselIdx));
+  // Update fan pagination
+  const pagination = document.getElementById("fan-pagination");
+  if (pagination) {
+    const total = PORTFOLIO.projects.length;
+    pagination.textContent = `0${carouselIdx + 1} — 0${total}`;
+  }
 
-  // Sync background watermark text with active project
-  const bgTitle = document.querySelector(".bg-title");
-  if (bgTitle && PORTFOLIO.projects[carouselIdx]) {
-    bgTitle.textContent = PORTFOLIO.projects[carouselIdx].title;
+  // Update dynamic preview
+  const preview = document.getElementById("fan-preview");
+  if (preview && PORTFOLIO.projects[carouselIdx]) {
+    const p = PORTFOLIO.projects[carouselIdx];
+    preview.classList.add("hidden");
+    
+    setTimeout(() => {
+      preview.innerHTML = `
+        <h3 class="fan-preview-title">${p.title}</h3>
+        <div class="fan-preview-subtitle">${p.tags.join(" • ")}</div>
+        <a href="${p.link}" target="_blank" class="fan-preview-link">View Project ↗</a>
+      `;
+      preview.classList.remove("hidden");
+    }, 300);
   }
 }
 
