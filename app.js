@@ -7,7 +7,7 @@ const PORTFOLIO = {
   // ── Personal Info ────────────────────────────────────────────
   name: "Rohit Kumar Nayak",
   tagline: "Software Engineer & Creative Technologist",
-  bio: "Building at the intersection of technology and creativity — from AI tools and robotics to 3D graphics and web engineering.",
+  bio: "I am a Computer Science Engineering student specializing in AI and Machine Learning at DRIEMS University. Driven by a vision to modernize the current app ecosystem, I specialize in full-stack development with a relentless focus on emerging technologies. Beyond software, I am expanding my expertise into robotics, constantly learning and applying new skills to build projects that push the boundaries of modern applications.",
   location: "India",
   email: "rohitkumarnayak0001@gmail.com",
 
@@ -62,10 +62,9 @@ const PORTFOLIO = {
 
   // ── Skills ───────────────────────────────────────────────────
   skills: [
-    "Web Development", "3D Graphics", "AI Algorithms",
-    "Robotics", "Creative Coding", "Backend Infrastructure",
-    "Three.js", "WebGL", "GLSL", "Python", "SvelteKit",
-    "React", "TypeScript", "Node.js",
+    "Web Development", "3D Graphics", "Robotics",
+    "Creative Coding", "Backend Infrastructure", "WebGL",
+    "Python", "React", "TypeScript", "Node.js",
   ],
 
   // ── Experience ───────────────────────────────────────────────

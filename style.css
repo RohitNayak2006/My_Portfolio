@@ -1214,14 +1214,14 @@ footer {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #f4f4f4; /* Off-white minimalist background */
+  background-color: transparent;
 }
 
 .fan-typography {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 5;
   padding: 40px;
 }
 
@@ -1278,6 +1278,76 @@ footer {
 }
 .fan-preview-link:hover {
   border-color: #111;
+}
+
+/* ╔════════════════════════════════════════════════════════════╗
+   PREMIUM MESH BACKGROUND
+╚════════════════════════════════════════════════════════════╝ */
+.mesh-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #f8f9fa; /* Base light tone */
+  z-index: 0;
+}
+
+.mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.75;
+  will-change: transform;
+  animation: meshDrift 24s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+.blob-1 {
+  top: -15%;
+  left: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: #e3eeff; /* Crisp light blue */
+  animation-delay: 0s;
+}
+
+.blob-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 70vw;
+  height: 70vw;
+  background: #f3e7e9; /* Soft pearl pink */
+  animation-duration: 28s;
+  animation-delay: -5s;
+}
+
+.blob-3 {
+  top: 30%;
+  left: 35%;
+  width: 55vw;
+  height: 55vw;
+  background: #eadecb; /* Warm sand */
+  animation-duration: 32s;
+  animation-delay: -12s;
+}
+
+/* SVG Noise Overlay for matte designer finish */
+.mesh-noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+@keyframes meshDrift {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(6%, 10%) scale(1.05) rotate(5deg); }
+  66% { transform: translate(-4%, 8%) scale(0.95) rotate(-3deg); }
+  100% { transform: translate(8%, -5%) scale(1) rotate(2deg); }
 }
 
 #carousel-wrap {
