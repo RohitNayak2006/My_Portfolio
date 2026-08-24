@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════
    DESIGN TOKENS — Exact palette from mariusballot.com
@@ -15,7 +15,8 @@
   --bg-subtle: #f7f7f7;
   --border: rgba(0, 0, 0, 0.08);
 
-  --font: 'IBM Plex Sans', sans-serif;
+  --font-heading: 'IBM Plex Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
   --radius: 100px;
   --pad: 32px;
   --trans: 0.2s ease;
@@ -27,7 +28,7 @@
 *,
 *::before,
 *::after {
-  font-family: var(--font);
+  font-family: var(--font-body);
   font-optical-sizing: auto;
   font-style: normal;
   margin: 0;
@@ -39,6 +40,10 @@
   font-weight: 400;
   list-style-type: none;
   font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, .logo, .footer-name, .fan-pagination {
+  font-family: var(--font-heading);
 }
 
 p {
