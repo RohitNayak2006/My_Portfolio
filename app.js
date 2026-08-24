@@ -502,6 +502,31 @@ function initAnimations() {
       });
     });
   }
+
+  // ── Stats counter animation (count up on scroll) ──────────────
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll(".stat-number").forEach(el => {
+        const target = parseInt(el.dataset.target, 10);
+        const duration = 1200;
+        const steps = 40;
+        const increment = target / steps;
+        let current = 0;
+        let step = 0;
+        const timer = setInterval(() => {
+          step++;
+          current = Math.min(Math.round(increment * step), target);
+          el.textContent = current;
+          if (current >= target) clearInterval(timer);
+        }, duration / steps);
+      });
+      statsObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+
+  const statsEl = document.querySelector(".about-stats");
+  if (statsEl) statsObserver.observe(statsEl);
 }
 
 // ── Mobile Drawer ─────────────────────────────────────────────
