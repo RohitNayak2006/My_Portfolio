@@ -119,6 +119,7 @@ function renderAll() {
   renderContact();
   renderFooter();
   initAnimations();
+  initAboutTextAnimations(); // premium text animations for about section
   initStripes();
   initMobileMenu();
   initHeroCanvas();         // rotating wireframe sphere on hero
@@ -527,6 +528,172 @@ function initAnimations() {
 
   const statsEl = document.querySelector(".about-stats");
   if (statsEl) statsObserver.observe(statsEl);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ABOUT TEXT ANIMATIONS
+//  Fires once when #about scrolls into view:
+//  1. Curtain reveal on section labels
+//  2. Character scramble on the heading
+//  3. Word-by-word blur-fade on bio paragraphs (+ kinetic underline)
+//  4. Letter stagger on experience company names
+//  5. Gradient sweep on stat numbers
+//  6. Badge pop-in with stagger on skill pills
+// ══════════════════════════════════════════════════════════════
+
+function scrambleText(el, finalText, duration = 1200) {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*';
+  const STEPS = 28;
+  const ms    = duration / STEPS;
+  let step = 0;
+
+  // Store gradient class so we can restore it
+  const hadGradient = el.classList.contains('about-gradient-heading');
+
+  const tick = setInterval(() => {
+    step++;
+    const progress = step / STEPS;
+    el.textContent = finalText.split('').map((char, i) => {
+      if (char === ' ') return ' ';
+      if (progress > (i / finalText.length) + 0.08) return char;
+      return CHARS[Math.floor(Math.random() * CHARS.length)];
+    }).join('');
+
+    if (step >= STEPS) {
+      clearInterval(tick);
+      el.textContent = finalText;
+      // Gradient is CSS-applied — stays active automatically
+    }
+  }, ms);
+}
+
+function initAboutTextAnimations() {
+  const about = document.getElementById('about');
+  if (!about) return;
+
+  // ── Pre-process: wrap section labels in curtain structure ────
+  about.querySelectorAll('.section-label').forEach(label => {
+    const text = label.textContent.trim();
+    label.innerHTML = `<span class="curtain-inner">${text}</span>`;
+    label.classList.add('curtain-wrap');
+  });
+
+  // ── Pre-process: split bio paragraphs into words ─────────────
+  // Key phrases to underline kinetically
+  const highlights = [
+    'software engineer',
+    'creative technologist',
+    'AI-powered',
+    'visually compelling',
+    'full-stack engineering',
+    'robotics',
+    'creative coding',
+  ];
+
+  about.querySelectorAll('.about-bio-text').forEach((p, pi) => {
+    let html = p.textContent.trim();
+    // Wrap highlights first (before word-split)
+    highlights.forEach((phrase, hi) => {
+      const re = new RegExp(`(${phrase})`, 'gi');
+      html = html.replace(re, `<span class="bio-highlight" style="--ud:${0.6 + hi * 0.12}s">$1</span>`);
+    });
+    // Now split non-highlighted text into word spans
+    // We need to tokenize around existing span tags
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    let wordIdx = 0;
+    tmp.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = node.textContent.split(/( +)/);
+        const frag = document.createDocumentFragment();
+        words.forEach(token => {
+          if (token.trim() === '') {
+            frag.appendChild(document.createTextNode(token));
+          } else {
+            const span = document.createElement('span');
+            span.className = 'word-reveal';
+            span.style.setProperty('--i', wordIdx++);
+            span.textContent = token;
+            frag.appendChild(span);
+          }
+        });
+        node.replaceWith(frag);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('bio-highlight')) {
+        // Wrap the highlight span itself as a word-reveal
+        const wrapper = document.createElement('span');
+        wrapper.className = 'word-reveal';
+        wrapper.style.setProperty('--i', wordIdx++);
+        node.parentNode?.insertBefore(wrapper, node);
+        wrapper.appendChild(node);
+      }
+    });
+    p.innerHTML = tmp.innerHTML;
+  });
+
+  // ── Pre-process: split experience company names into letters ──
+  about.querySelectorAll('.exp-company').forEach((el, ci) => {
+    const text = el.textContent;
+    el.innerHTML = text.split('').map((char, li) =>
+      char === ' '
+        ? '&nbsp;'
+        : `<span class="letter-reveal" style="--ci:${ci};--li:${li}">${char}</span>`
+    ).join('');
+    el.classList.add('exp-company-animated');
+  });
+
+  // Store heading original text for scramble
+  const heading = about.querySelector('.about-gradient-heading');
+  const headingText = heading?.textContent.trim() || '';
+
+  // ── Main trigger: IntersectionObserver fires once on #about ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      // 1. Curtain reveal: labels slide in teal curtain, then out
+      about.querySelectorAll('.curtain-wrap').forEach((label, i) => {
+        setTimeout(() => {
+          label.classList.add('curtain-in');
+          setTimeout(() => label.classList.add('curtain-out'), 380);
+        }, i * 160);
+      });
+
+      // 2. Heading scramble (slight delay so curtain leads)
+      if (heading) {
+        setTimeout(() => scrambleText(heading, headingText, 1300), 180);
+      }
+
+      // 3. Bio word blur-fade reveal (staggered per paragraph)
+      about.querySelectorAll('.about-bio-text').forEach((p, pi) => {
+        setTimeout(() => p.classList.add('words-visible'), 350 + pi * 120);
+      });
+
+      // 4. Experience company name letter stagger
+      about.querySelectorAll('.exp-company-animated').forEach((el, ci) => {
+        setTimeout(() => el.classList.add('letters-visible'), 500 + ci * 90);
+      });
+
+      // 5. Stat gradient sweep (starts after count-up nearly done)
+      about.querySelectorAll('.stat-number').forEach(el => {
+        setTimeout(() => {
+          el.classList.add('sweeping');
+        }, 1400);
+      });
+      about.querySelectorAll('.stat-plus').forEach(el => {
+        setTimeout(() => el.classList.add('sweeping'), 1400);
+      });
+
+      // 6. Skill badge pop-in with stagger
+      about.querySelectorAll('#skills-list .pill').forEach((pill, i) => {
+        pill.style.animationDelay = `${600 + i * 55}ms`;
+        pill.classList.add('pill-pop');
+      });
+
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+
+  observer.observe(about);
 }
 
 // ── Mobile Drawer ─────────────────────────────────────────────
