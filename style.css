@@ -42,7 +42,7 @@
   font-size: 16px;
 }
 
-h1, h2, h3, h4, h5, h6, .logo, .footer-name, .fan-pagination {
+h1, h2, h3, h4, h5, h6, .logo, .footer-name, .gallery-count {
   font-family: var(--font-heading);
 }
 
@@ -340,10 +340,10 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: 45%;
+  width: 55%;
   height: 100%;
   object-fit: cover;
-  object-position: center 70%;
+  object-position: 105% 55%;
   /* anchors person lower in frame to show lower body */
   filter: brightness(0.9);
   /* Unblurred, clear */
@@ -362,12 +362,12 @@ header {
 @keyframes photoFadeIn {
   from {
     opacity: 0;
-    transform: scale(1.08);
+    transform: scale(1.02);
   }
 
   to {
     opacity: 1;
-    transform: scale(1.04);
+    transform: scale(1.0);
   }
 }
 
@@ -393,8 +393,8 @@ header {
   height: 100vh;
   overflow: hidden;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 35%, black 60%, black 100%);
-  mask-image: linear-gradient(to right, transparent 0%, transparent 35%, black 60%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 50%, black 75%, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, transparent 50%, black 75%, black 100%);
 }
 
 .stripes-wrap {
@@ -1363,80 +1363,125 @@ footer {
   z-index: 0;
 }
 
-/* ╔════════════════════════════════════════════════════════════╗
-   FAN TYPOGRAPHY & CAROUSEL
-╚════════════════════════════════════════════════════════════╝ */
-.fan-section {
+/* ╔════════════════════════════════════════════════════════════
+   3D GALLERY SECTION
+╚═══════════════════════════════════════════════════════════╝ */
+.gallery-section {
   position: relative;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  background-color: transparent;
+  /* Soft cream/paper tone — matches ThreeUI gallery background */
+  background: #f5f2ee;
+  display: flex;
+  align-items: stretch;
 }
 
-.fan-typography {
+/* Full-bleed canvas host */
+.gallery-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#gallery-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Vite/Three.js sets physical size via renderer.setSize —
+     the CSS size just controls the layout box */
+}
+
+/* Typography overlay — flexbox for reliable top/bottom positioning */
+.gallery-typography {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 5;
   padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.fan-top-left {
-  position: absolute;
-  top: 40px;
-  left: 40px;
+.gallery-top-left {
   display: flex;
   gap: 60px;
-  font-family: 'Inter', sans-serif;
+  align-self: flex-start;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1rem;
   color: #111;
 }
 
-.fan-preview {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  text-align: right;
-  font-family: 'Inter', sans-serif;
+.gallery-label {
+  font-weight: 700;
+  font-size: 1rem;
   color: #111;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 10;
 }
 
-.fan-preview.hidden {
+.gallery-count {
+  font-weight: 400;
+  font-size: 1rem;
+  color: rgba(17, 17, 17, 0.5);
+}
+
+/* Bottom-right: cycling project info */
+.gallery-preview {
+  align-self: flex-end;
+  text-align: right;
+  pointer-events: auto;
+  color: #111;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-preview.hidden {
   opacity: 0;
   transform: translateY(10px);
 }
 
-.fan-preview-title {
+.gallery-preview-title {
+  font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 800;
   margin: 0 0 4px 0;
+  color: #111;
 }
 
-.fan-preview-subtitle {
+.gallery-preview-subtitle {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.6);
+  color: rgba(17, 17, 17, 0.55);
   margin-bottom: 16px;
 }
 
-.fan-preview-link {
+.gallery-preview-link {
   font-size: 0.9rem;
   font-weight: 700;
   color: #111;
   text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s ease;
+  cursor: pointer;
 }
-.fan-preview-link:hover {
+
+.gallery-preview-link:hover {
   border-color: #111;
+}
+
+/* Mobile adjustments */
+@media (max-width: 700px) {
+  .gallery-typography {
+    padding: 20px;
+  }
+
+  .gallery-preview-title {
+    font-size: 1.4rem;
+  }
 }
 
 /* ╔════════════════════════════════════════════════════════════╗

@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 //  PORTFOLIO CONFIG — Edit everything here to customize your site
 // ═══════════════════════════════════════════════════════════════
+import { initGallery } from './gallery.js';
 
 const PORTFOLIO = {
 
@@ -26,37 +27,56 @@ const PORTFOLIO = {
   ],
 
   // ── Projects ─────────────────────────────────────────────────
-  // Swap out image paths and project details as needed
   projects: [
     {
       id: "01",
       title: "Viora",
       subtitle: "Social Media App",
-      description: "A new generation social media app built with latest technologies like one-to-one chat, reels, and photo sharing.",
+      description: "A next-generation social media platform with real-time one-to-one chat, reels, and photo sharing built with modern full-stack technologies.",
       tags: ["React", "Node.js", "MongoDB", "Socket.io"],
-      image: "viora-thumb.jpg",
+      image: "/gallery/gallery-1.jpg",
       link: "https://vioraofficial.vercel.app/",
       year: "2026",
     },
     {
       id: "02",
-      title: "Robotics Platform",
-      subtitle: "Engineering / Robotics",
-      description: "Real-time robotic control platform with ML-assisted motion planning, built for industrial automation pipelines.",
-      tags: ["Python", "ROS", "ML", "C++"],
-      image: "thumb2.png",
+      title: "MediNear",
+      subtitle: "Healthcare App",
+      description: "A production healthcare app to find nearby medical facilities, pharmacies, and local medicine — live and serving users.",
+      tags: ["React Native", "Node.js", "MongoDB", "Maps API"],
+      image: "/gallery/gallery-4.jpg",
       link: "#",
-      year: "2023",
+      year: "2025",
     },
     {
       id: "03",
-      title: "AI Medical Tool",
-      subtitle: "AI / Healthcare",
-      description: "A diagnostic assistance tool leveraging deep learning models for 3D dental scan analysis and automated segmentation.",
-      tags: ["PyTorch", "DICOM", "React", "FastAPI"],
-      image: "thumb3.png",
+      title: "Eastfield Gunroom",
+      subtitle: "E-Commerce / Retail",
+      description: "A premium e-commerce platform for a luxury gunroom brand with inventory management, product listings, and a refined shopping experience.",
+      tags: ["React", "Node.js", "Stripe", "MongoDB"],
+      image: "/gallery/gallery-2.jpg",
       link: "#",
-      year: "2023",
+      year: "2025",
+    },
+    {
+      id: "04",
+      title: "Phoenix",
+      subtitle: "Brand Identity / Design",
+      description: "A full brand identity and design system project featuring visual language, typography, and logo design for a dynamic rising brand.",
+      tags: ["Figma", "Brand Design", "Motion Graphics"],
+      image: "/gallery/gallery-3.jpg",
+      link: "#",
+      year: "2024",
+    },
+    {
+      id: "05",
+      title: "Levi — AoT Tribute",
+      subtitle: "Creative / Fan Project",
+      description: "A creative design and illustration tribute to Attack on Titan's Levi Ackerman, showcasing cinematic poster art and digital illustration.",
+      tags: ["Illustration", "Photoshop", "Digital Art"],
+      image: "/gallery/gallery-5.jpg",
+      link: "#",
+      year: "2024",
     },
   ],
 
@@ -112,8 +132,8 @@ function renderAll() {
   renderLoader();
   renderNav();
   renderHero();
-  renderHeroPanels();       // floating project cards in hero
-  renderCarousel();         // replaces flat renderProjects
+  // renderHeroPanels();       // floating project cards in hero - removed as per user request
+  renderGalleryPreview();   // cycling project info overlay
   renderSkills();
   renderExperience();
   renderContact();
@@ -123,8 +143,20 @@ function renderAll() {
   initStripes();
   initMobileMenu();
   initHeroCanvas();         // rotating wireframe sphere on hero
-  initCarouselKeys();       // keyboard + Escape support
+  initDetailKeys();         // Escape key for project detail panel
   initHeroPanelParallax();  // removed — panels now use CSS-only lift on hover
+
+  // Init 3D gallery after DOM is ready
+  const galleryHost   = document.getElementById('gallery-host');
+  const galleryCanvas = document.getElementById('gallery-canvas');
+  if (galleryHost && galleryCanvas) {
+    initGallery(galleryHost, galleryCanvas, {
+      speed: 1,
+      scale: 1,
+      opacity: 1,
+      onProjectClick: (projectIdx) => openProjectDetail(projectIdx),
+    });
+  }
 
   // Kick off loader then reveal page
   startLoader();
@@ -206,127 +238,42 @@ function renderHero() {
 }
 
 // ══════════════════════════════════════════════════════════════
-//  3D COVER-FLOW CAROUSEL
+//  GALLERY PREVIEW — cycles project info in the overlay
 // ══════════════════════════════════════════════════════════════
-let carouselIdx = 0;
+function renderGalleryPreview() {
+  const preview = document.getElementById('gallery-preview');
+  if (!preview) return;
 
-function renderCarousel() {
-  const el = document.getElementById("carousel-wrap");
-  if (!el) return;
+  let current = 0;
+  const total = PORTFOLIO.projects.length;
 
-  el.innerHTML = `
-    <div id="carousel-scene">
-      <div id="carousel-track">
-        ${PORTFOLIO.projects.map((p, i) => `
-          <div class="carousel-card" data-idx="${i}">
-            <img src="${p.image}" alt="${p.title}" class="carousel-card-image" loading="lazy" />
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
+  const update = () => {
+    const p = PORTFOLIO.projects[current];
+    preview.classList.add('hidden');
 
-  // ── Card click: side cards navigate, center card opens detail
-  document.querySelectorAll(".carousel-card").forEach((card, i) => {
-    card.addEventListener("click", () => {
-      if (i === carouselIdx) {
-        openProjectDetail(i);
-      } else {
-        carouselIdx = i;
-        updateCarousel();
-      }
-    });
-  });
-
-  // ── Prev / Next buttons
-  document.getElementById("carousel-prev")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    navigateCarousel(-1);
-  });
-  document.getElementById("carousel-next")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    navigateCarousel(1);
-  });
-
-  // ── Dot navigation
-  document.querySelectorAll(".carousel-dot").forEach((dot) => {
-    dot.addEventListener("click", () => {
-      carouselIdx = parseInt(dot.dataset.idx);
-      updateCarousel();
-    });
-  });
-
-  // ── Touch/swipe support
-  let touchStartX = 0;
-  const track = document.getElementById("carousel-track");
-  track?.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-  }, { passive: true });
-  track?.addEventListener("touchend", (e) => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) navigateCarousel(diff > 0 ? 1 : -1);
-  });
-
-  // Mouse drag support
-  let isDragging = false;
-  let mouseStartX = 0;
-  track?.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    mouseStartX = e.clientX;
-  });
-  track?.addEventListener("mouseup", (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    const diff = mouseStartX - e.clientX;
-    if (Math.abs(diff) > 50) navigateCarousel(diff > 0 ? 1 : -1);
-  });
-  track?.addEventListener("mouseleave", () => isDragging = false);
-
-  updateCarousel();
-}
-
-function updateCarousel() {
-  const cards = document.querySelectorAll(".carousel-card");
-  const dots  = document.querySelectorAll(".carousel-dot");
-
-  cards.forEach((card, i) => {
-    const diff = i - carouselIdx;
-    card.className = "carousel-card";
-    if      (diff === 0)  card.classList.add("pos-center");
-    else if (diff === -1) card.classList.add("pos-prev");
-    else if (diff === 1)  card.classList.add("pos-next");
-    else if (diff <= -2)  card.classList.add("pos-far-prev");
-    else                  card.classList.add("pos-far-next");
-  });
-
-  // Update fan pagination
-  const pagination = document.getElementById("fan-pagination");
-  if (pagination) {
-    const total = PORTFOLIO.projects.length;
-    pagination.textContent = `0${carouselIdx + 1} — 0${total}`;
-  }
-
-  // Update dynamic preview
-  const preview = document.getElementById("fan-preview");
-  if (preview && PORTFOLIO.projects[carouselIdx]) {
-    const p = PORTFOLIO.projects[carouselIdx];
-    preview.classList.add("hidden");
-    
     setTimeout(() => {
       preview.innerHTML = `
-        <h3 class="fan-preview-title">${p.title}</h3>
-        <div class="fan-preview-subtitle">${p.tags.join(" • ")}</div>
-        <a href="${p.link}" target="_blank" class="fan-preview-link">View Project ↗</a>
+        <h3 class="gallery-preview-title">${p.title}</h3>
+        <div class="gallery-preview-subtitle">${p.tags.join(' • ')}</div>
+        <a href="${p.link}" target="_blank" rel="noopener" class="gallery-preview-link">View Project ↗</a>
       `;
-      preview.classList.remove("hidden");
-    }, 300);
-  }
-}
 
-function navigateCarousel(dir) {
-  const total = PORTFOLIO.projects.length;
-  carouselIdx = (carouselIdx + dir + total) % total;
-  updateCarousel();
+      // Wire up click to open detail panel
+      preview.querySelector('.gallery-preview-link')?.addEventListener('click', (e) => {
+        if (p.link === '#') { e.preventDefault(); openProjectDetail(current); }
+      });
+
+      preview.classList.remove('hidden');
+
+      const count = document.getElementById('gallery-count');
+      if (count) count.textContent = `0${current + 1} — 0${total}`;
+    }, 300);
+
+    current = (current + 1) % total;
+  };
+
+  update();
+  setInterval(update, 3500);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -334,8 +281,8 @@ function navigateCarousel(dir) {
 // ══════════════════════════════════════════════════════════════
 function openProjectDetail(idx) {
   const p       = PORTFOLIO.projects[idx];
-  const detail  = document.getElementById("project-detail");
-  const content = document.getElementById("detail-content");
+  const detail  = document.getElementById('project-detail');
+  const content = document.getElementById('detail-content');
   if (!detail || !content) return;
 
   content.innerHTML = `
@@ -348,7 +295,7 @@ function openProjectDetail(idx) {
       <h2 class="detail-title">${p.title}</h2>
       <p class="detail-desc">${p.description}</p>
       <ul class="detail-tags">
-        ${p.tags.map(t => `<li class="pill">${t}</li>`).join("")}
+        ${p.tags.map(t => `<li class="pill">${t}</li>`).join('')}
       </ul>
       <a href="${p.link}" target="_blank" rel="noopener" class="detail-link">
         View Project ↗
@@ -356,32 +303,24 @@ function openProjectDetail(idx) {
     </div>
   `;
 
-  detail.classList.add("open");
-  document.body.style.overflow = "hidden";
-  // Focus the close button for accessibility
-  setTimeout(() => document.getElementById("detail-close")?.focus(), 50);
+  detail.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('detail-close')?.focus(), 50);
 }
+window.openProjectDetail = openProjectDetail;
 
 function closeProjectDetail() {
-  const detailPanel = document.getElementById("project-detail");
+  const detailPanel = document.getElementById('project-detail');
   if (!detailPanel) return;
-
-  detailPanel.classList.remove("open");
-  // Restore body scroll
-  document.body.style.overflow = "auto";
+  detailPanel.classList.remove('open');
+  document.body.style.overflow = 'auto';
 }
 window.closeProjectDetail = closeProjectDetail;
 
-// ── Keyboard navigation for carousel and detail panel ─────────
-function initCarouselKeys() {
-  document.addEventListener("keydown", (e) => {
-    const detail = document.getElementById("project-detail");
-    if (detail?.classList.contains("open")) {
-      if (e.key === "Escape") closeProjectDetail();
-    } else {
-      if (e.key === "ArrowLeft")  navigateCarousel(-1);
-      if (e.key === "ArrowRight") navigateCarousel(1);
-    }
+// ── Keyboard — Escape closes detail panel ─────────────────────
+function initDetailKeys() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProjectDetail();
   });
 }
 
@@ -452,10 +391,11 @@ function initStripes() {
   const allImgs = [
     ...projectImgs, ...projectImgs, ...projectImgs,
     ...projectImgs, ...projectImgs, ...projectImgs,
+    ...projectImgs, ...projectImgs, ...projectImgs,
   ];
 
-  const NUM_STRIPES    = 4;
-  const IMGS_PER_STRIPE = 6;
+  const NUM_STRIPES    = 8; // Increased to cover more empty space
+  const IMGS_PER_STRIPE = 8;
 
   let html = "";
   for (let s = 0; s < NUM_STRIPES; s++) {
@@ -809,34 +749,12 @@ function initHeroCanvas() {
   draw();
 }
 
+
 // ══════════════════════════════════════════════════════════════
-//  FLOATING HERO PANELS — project cards in the hero centre
+//  FLOATING HERO PANELS (Removed from front page)
 // ══════════════════════════════════════════════════════════════
 function renderHeroPanels() {
-  const el = document.getElementById("hero-panels");
-  if (!el) return;
-
-  el.innerHTML = PORTFOLIO.projects.map((p, i) => `
-    <div class="hero-panel" data-idx="${i}" title="${p.title}">
-      <div class="hero-panel-body">
-        <img src="${p.image}" alt="${p.title}" class="hero-panel-image" />
-        <span class="hero-panel-subtitle">${p.subtitle}</span>
-        <h3 class="hero-panel-title">${p.title}</h3>
-        <div class="hero-panel-tags">
-          ${p.tags.slice(0, 3).map(t => `<span class="hero-panel-tag">${t}</span>`).join("")}
-        </div>
-      </div>
-    </div>
-  `).join("");
-
-  // Clicking a panel scrolls to and activates the carousel at that project
-  el.querySelectorAll(".hero-panel").forEach((card, i) => {
-    card.addEventListener("click", () => {
-      carouselIdx = i;
-      updateCarousel();
-      document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-    });
-  });
+  // Removed as per user request
 }
 
 // ── Mouse-parallax removed — panels lift on hover via CSS only ─

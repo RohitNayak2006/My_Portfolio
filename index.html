@@ -114,24 +114,23 @@
   </section>
 
   <!-- ══════════════════════════════════════════════════════════
-       PROJECTS SECTION
+       PROJECTS SECTION — 3D Cylindrical Gallery
        ══════════════════════════════════════════════════════════ -->
-  <section id="projects" class="fan-section">
-    <!-- Premium Glass Gradient Mesh Background -->
-    <div class="mesh-bg">
-      <div class="mesh-blob blob-1"></div>
-      <div class="mesh-blob blob-2"></div>
-      <div class="mesh-blob blob-3"></div>
-      <div class="mesh-noise"></div>
+  <section id="projects" class="gallery-section">
+    <!-- 3D canvas host -->
+    <div class="gallery-host" id="gallery-host"
+         role="img" aria-label="Rotating 3D project gallery">
+      <canvas id="gallery-canvas" aria-hidden="true"></canvas>
     </div>
-    <div class="fan-typography">
-      <div class="fan-top-left">
-        <span class="fan-logo">● GetLayers</span>
-        <span class="fan-pagination" id="fan-pagination">01 — 03</span>
+
+    <!-- Typography overlay -->
+    <div class="gallery-typography">
+      <div class="gallery-top-left">
+        <span class="gallery-label">● Projects</span>
+        <span class="gallery-count" id="gallery-count">01 — 05</span>
       </div>
-      <div id="fan-preview" class="fan-preview"></div>
+      <div id="gallery-preview" class="gallery-preview"></div>
     </div>
-    <div id="carousel-wrap"></div>
   </section>
 
   <!-- ══════════════════════════════════════════════════════════
