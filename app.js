@@ -90,28 +90,28 @@ const PORTFOLIO = {
   // ── Experience ───────────────────────────────────────────────
   experience: [
     {
-      company: "Dentsply Sirona",
-      role: "Software Engineer",
-      period: "2023 – Present",
-      description: "Built AI-powered 3D dental scan analysis tools for clinical workflows.",
+      DRIEMS_UNIVERSITY: "B.Tech 1st Year",
+      role: "Foundation & IoT (8.5 & 9.2 CGPA)",
+      period: "2025 – 2026",
+      description: "Mastered foundational programming in C. Engineered and built hardware-integrated IoT projects for the IEEE lab, securing an outstanding academic record.",
     },
     {
-      company: "Formlabs",
-      role: "Software Engineer",
-      period: "2022 – 2023",
-      description: "Developed 3D printing software and toolchain infrastructure.",
+      DRIEMS_UNIVERSITY: "B.Tech 2nd Year",
+      role: "Full-Stack & Innovation (3rd Sem in progress)",
+      period: "2026 – 2027 (Present)",
+      description: "Expanding technical stack with Python, Java, and modern web frameworks. Architected and built 'Viora', a fully-featured social media application.",
     },
     {
-      company: "Happly Robotics",
-      role: "Robotics Engineer",
-      period: "2021 – 2022",
-      description: "Designed motion planning algorithms for industrial robotic arms.",
+      DRIEMS_UNIVERSITY: "B.Tech 3rd Year",
+      role: "Deepening Expertise",
+      period: "2027 – 2028",
+      description: "To be updated........",
     },
     {
-      company: "Make Me Pulse",
-      role: "Creative Developer",
-      period: "2019 – 2021",
-      description: "Created award-winning interactive 3D web experiences and creative campaigns.",
+      DRIEMS_UNIVERSITY: "B.Tech 4th Year",
+      role: "Future Horizon",
+      period: "2028 – 2029",
+      description: "To be updated........",
     },
   ],
 
@@ -344,7 +344,7 @@ function renderExperience() {
         <span class="exp-period">${e.period}</span>
       </div>
       <div class="exp-right">
-        <h4 class="exp-company">${e.company}</h4>
+        <h4 class="exp-company">DRIEMS UNIVERSITY: ${e.DRIEMS_UNIVERSITY}</h4>
         <p class="exp-role">${e.role}</p>
         <p class="exp-desc">${e.description}</p>
       </div>
