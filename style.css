@@ -340,15 +340,15 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: 55%;
+  width: 48%;
   height: 100%;
   object-fit: cover;
-  object-position: 105% 55%;
+  object-position: 80% 70%;
   /* anchors person lower in frame to show lower body */
   filter: brightness(0.9);
   /* Unblurred, clear */
   transform: scale(1.0);
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
 
   /* Blends smoothly into the right side animation */
@@ -393,8 +393,8 @@ header {
   height: 100vh;
   overflow: hidden;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 50%, black 75%, black 100%);
-  mask-image: linear-gradient(to right, transparent 0%, transparent 50%, black 75%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 25%, black 45%, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, transparent 25%, black 45%, black 100%);
 }
 
 .stripes-wrap {
