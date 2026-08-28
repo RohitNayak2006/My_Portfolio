@@ -8,9 +8,9 @@ import * as THREE from "three";
 
 const GALLERY_IMAGES = [
   "/gallery/gallery-1.jpg",
+  "/gallery/gallery-4.jpg",
   "/gallery/gallery-2.jpg",
   "/gallery/gallery-3.jpg",
-  "/gallery/gallery-4.jpg",
   "/gallery/gallery-5.jpg",
 ];
 

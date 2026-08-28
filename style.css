@@ -181,11 +181,12 @@ body {
    HEADER / NAV
    ═══════════════════════════════════════════════ */
 header {
+  position: relative;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  z-index: 2;
+  z-index: 10;
 }
 
 .logo {
@@ -569,6 +570,7 @@ header {
   bottom: var(--pad);
   left: var(--pad);
   right: var(--pad);
+  z-index: 10;
 }
 
 .hero-footer-left {
