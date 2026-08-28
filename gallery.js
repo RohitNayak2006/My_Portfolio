@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════
+/// ═══════════════════════════════════════════════════════════════
 //  GALLERY.JS — Vanilla JS port of ThreeUI "Vantrix" Gallery
 //  16 curved cylindrical image panels, auto-rotating with drift.
 //  Fixed: portrait-ratio panels + Raycaster click detection.

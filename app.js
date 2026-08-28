@@ -145,6 +145,7 @@ function renderAll() {
   initHeroCanvas();         // rotating wireframe sphere on hero
   initDetailKeys();         // Escape key for project detail panel
   initHeroPanelParallax();  // removed — panels now use CSS-only lift on hover
+  initBackToTop();          // scroll to top button logic
 
   // Init 3D gallery after DOM is ready
   const galleryHost   = document.getElementById('gallery-host');
@@ -356,12 +357,23 @@ function renderContact() {
   const el = document.getElementById("contact-content");
   if (!el) return;
   el.innerHTML = `
-    <a href="mailto:${PORTFOLIO.email}" class="contact-email">${PORTFOLIO.email}</a>
-    <ul class="contact-socials">
-      ${PORTFOLIO.socials
-        .map(s => `<li><a href="${s.href}" target="_blank" rel="noopener" class="nav-link">${s.label}</a></li>`)
-        .join("")}
-    </ul>
+    <form class="contact-form" action="https://formspree.io/f/xkjnnpkk" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" id="name" name="name" required placeholder=" " />
+          <label for="name">Your Name</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" required placeholder=" " />
+          <label for="email">Your Email</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea id="message" name="message" required placeholder=" " rows="4"></textarea>
+        <label for="message">Message</label>
+      </div>
+      <button type="submit" class="btn-primary form-submit">Send Message</button>
+    </form>
   `;
 }
 
@@ -769,4 +781,22 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", renderAll);
 } else {
   renderAll();
+}
+
+// ── Back to Top Button ───────────────────────────────────────
+function initBackToTop() {
+  const btn = document.getElementById("back-to-top");
+  if (!btn) return;
+  
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      btn.classList.add("show");
+    } else {
+      btn.classList.remove("show");
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }

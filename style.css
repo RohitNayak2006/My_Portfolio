@@ -1157,39 +1157,76 @@ header {
   justify-content: center;
 }
 
-.contact-email {
-  display: inline-block;
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: 700;
-  position: relative;
-  margin-bottom: 32px;
-  cursor: pointer;
-  transition: color var(--trans);
-}
-
-.contact-email::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 100%;
-  width: 0%;
-  height: 2px;
-  background: var(--color-primary);
-  transition: width var(--trans);
-}
-
-.contact-email:hover {
-  color: var(--color-primary);
-}
-
-.contact-email:hover::after {
+/* ── Contact Form ────────────────────────────────────────────── */
+.contact-form {
   width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.contact-socials {
+.form-row {
   display: flex;
-  gap: 32px;
+  gap: 24px;
 }
+
+.form-group {
+  position: relative;
+  flex: 1;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  padding: 12px 0;
+  font-size: 1rem;
+  color: var(--color-body-text-dark);
+  transition: border-color var(--trans);
+  resize: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--color-primary);
+}
+
+.contact-form label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  font-size: 1rem;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Float label up when focused or not empty */
+.contact-form input:focus ~ label,
+.contact-form input:not(:placeholder-shown) ~ label,
+.contact-form textarea:focus ~ label,
+.contact-form textarea:not(:placeholder-shown) ~ label {
+  top: -12px;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.form-submit {
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+  }
+}
+
 
 /* Copied pill */
 #copied-pill {
@@ -2062,4 +2099,47 @@ footer {
 
 .words-visible .bio-highlight::after {
   width: 100%;
+}
+
+/* ═══════════════════════════════════════════════
+   BACK TO TOP BUTTON
+   ═══════════════════════════════════════════════ */
+#back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 50px;
+  height: 50px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(10, 107, 88, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#back-to-top:hover {
+  background: var(--color-primary-light);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(10, 107, 88, 0.4);
+}
+
+@media (max-width: 700px) {
+  #back-to-top {
+    bottom: 24px;
+    right: 24px;
+  }
 }
