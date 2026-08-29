@@ -93,7 +93,7 @@ const PORTFOLIO = {
       DRIEMS_UNIVERSITY: "B.Tech 1st Year",
       role: "Foundation & IoT (8.5 & 9.2 CGPA)",
       period: "2025 – 2026",
-      description: "Mastered foundational programming in C. Engineered and built hardware-integrated IoT projects for the IEEE lab, securing an outstanding academic record.",
+      description: "Mastered foundational programming in C. Engineered and built hardware-integrated IoT projects for the IEE lab, securing an outstanding academic record.",
     },
     {
       DRIEMS_UNIVERSITY: "B.Tech 2nd Year",
@@ -357,7 +357,7 @@ function renderContact() {
   const el = document.getElementById("contact-content");
   if (!el) return;
   el.innerHTML = `
-    <form class="contact-form" action="https://formspree.io/f/xkjnnpkk" method="POST">
+    <form id="contact-form" class="contact-form" action="https://formspree.io/f/xkjnnpkk" method="POST">
       <div class="form-row">
         <div class="form-group">
           <input type="text" id="name" name="name" required placeholder=" " />
@@ -373,8 +373,43 @@ function renderContact() {
         <label for="message">Message</label>
       </div>
       <button type="submit" class="btn-primary form-submit">Send Message</button>
+      <p id="contact-status" style="margin-top: 16px; font-weight: 500; font-size: 0.9rem;"></p>
     </form>
   `;
+
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("contact-status");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.textContent = "Sending...";
+      status.style.color = "var(--color-body-text-dark)";
+      
+      const data = new FormData(form);
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          status.textContent = "Thanks for your message! I'll get back to you soon.";
+          status.style.color = "var(--color-primary)";
+          form.reset();
+        } else {
+          status.textContent = "Oops! There was a problem submitting your form.";
+          status.style.color = "red";
+        }
+      } catch (error) {
+        status.textContent = "Oops! There was a problem submitting your form.";
+        status.style.color = "red";
+      }
+    });
+  }
 }
 
 // ── Footer ────────────────────────────────────────────────────
